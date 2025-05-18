@@ -5,9 +5,15 @@ import { toast } from 'sonner';
 
 const AuthButton: React.FC = () => {
   const [loading, setLoading] = React.useState(false);
-  const [user, setUser] = React.useState(supabase.auth.getUser());
+  const [user, setUser] = React.useState(null);
 
   React.useEffect(() => {
+    // Get initial user state
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null);
     });
@@ -27,7 +33,8 @@ const AuthButton: React.FC = () => {
       
       if (error) throw error;
     } catch (error) {
-      toast.error("Erreur de connexion");
+      console.error('Login error:', error);
+      toast.error("Erreur de connexion avec Discord");
     } finally {
       setLoading(false);
     }
@@ -36,9 +43,12 @@ const AuthButton: React.FC = () => {
   const handleLogout = async () => {
     try {
       setLoading(true);
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      toast.success("Déconnexion réussie");
     } catch (error) {
-      toast.error("Erreur de déconnexion");
+      console.error('Logout error:', error);
+      toast.error("Erreur lors de la déconnexion");
     } finally {
       setLoading(false);
     }
