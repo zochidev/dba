@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, Bot, X } from 'lucide-react';
+import AuthButton from './AuthButton';
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -67,10 +68,12 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
             >
               discord.py
             </Link>
+            <AuthButton />
           </nav>
 
           {/* Mobile menu button */}
-          <div className="flex lg:hidden">
+          <div className="flex lg:hidden items-center space-x-4">
+            <AuthButton />
             <button
               onClick={toggleMenu}
               className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-indigo-600 transition-colors"
