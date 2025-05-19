@@ -8,6 +8,26 @@ import LessonPage from './pages/LessonPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { discordJsCourse, discordPyCourse } from './data/courses';
 
+// Auth callback handler component
+const AuthCallback = () => {
+  React.useEffect(() => {
+    const handleAuthCallback = async () => {
+      try {
+        const { searchParams } = new URL(window.location.href);
+        const code = searchParams.get('code');
+        if (!code) throw new Error('No code provided');
+        window.location.replace('/');
+      } catch (error) {
+        console.error('Error during auth:', error);
+        window.location.replace('/');
+      }
+    };
+    handleAuthCallback();
+  }, []);
+
+  return <div>Redirection en cours...</div>;
+};
+
 function App() {
   return (
     <Router>
@@ -24,11 +44,12 @@ function App() {
           <Route path="discord.py" element={<CoursePage course={discordPyCourse} />} />
           <Route path="discord.py/:chapterId/:lessonId" element={<LessonPage course={discordPyCourse} />} />
           
+          {/* Auth callback route */}
+          <Route path="auth/callback" element={<AuthCallback />} />
+          
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Router>
   );
 }
-
-export default App;
