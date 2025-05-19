@@ -81,3 +81,5 @@ const AuthButton: React.FC = () => {
     </button>
   );
 };
+
+export default AuthButton
