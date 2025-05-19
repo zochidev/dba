@@ -7,26 +7,6 @@ import CoursePage from './pages/CoursePage';
 import LessonPage from './pages/LessonPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { discordJsCourse, discordPyCourse } from './data/courses';
-import { supabase } from './lib/supabase';
-
-// Auth callback handler component
-const AuthCallback = () => {
-  React.useEffect(() => {
-    const handleAuthCallback = async () => {
-      try {
-        const { error } = await supabase.auth.exchangeCodeForSession(window.location.hash);
-        if (error) throw error;
-        window.location.replace('/');
-      } catch (error) {
-        console.error('Error during auth:', error);
-        window.location.replace('/');
-      }
-    };
-    handleAuthCallback();
-  }, []);
-
-  return <div>Redirection en cours...</div>;
-};
 
 function App() {
   return (
@@ -43,9 +23,6 @@ function App() {
           {/* discord.py routes */}
           <Route path="discord.py" element={<CoursePage course={discordPyCourse} />} />
           <Route path="discord.py/:chapterId/:lessonId" element={<LessonPage course={discordPyCourse} />} />
-          
-          {/* Auth callback route */}
-          <Route path="auth/callback" element={<AuthCallback />} />
           
           <Route path="*" element={<NotFoundPage />} />
         </Route>
