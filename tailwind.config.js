@@ -23,7 +23,13 @@ export default {
       boxShadow: {
         'discord': '0 8px 16px rgba(0, 0, 0, 0.24)',
       },
+      screens: {
+        'xs': '475px',
+        ...require('tailwindcss/defaultTheme').screens,
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };
